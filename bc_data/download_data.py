@@ -56,12 +56,19 @@ for pA in lstA:
                     mapResults[pDate] = " ".join(lstData)+" "+str(sqrt(int(lstData[-1])))
                     break
 
+with open("bc_measles.dat") as inFile:
+    for strLine in inFile:
+        strLine = strLine.strip()
+        if strLine.startswith("#"): continue
+        pLast = date.fromisoformat(strLine.split()[0])
+
 lstKeys = list(mapResults.keys())
 lstKeys.sort()
-with open("bc_measles.dat", "w") as outFile:
-    outFile.write("#Date Confirmed Suspected Total TotalError\n")
+with open("bc_measles.dat", "a") as outFile:
+#    outFile.write("#Date Confirmed Suspected Total TotalError\n")
     for pDate in lstKeys:
-        outFile.write(str(pDate)+" "+mapResults[pDate]+"\n")
+        if pDate > pLast:
+            outFile.write(str(pDate)+" "+mapResults[pDate]+"\n")
 
 pEndDate = date.today()+timedelta(days=7)
 with open("play_bc.gno", "w") as outFile:
