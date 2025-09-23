@@ -42,6 +42,7 @@ for pA in lstA:
             pDate = date.fromisoformat(strDate)
             if not os.path.exists(strLocalFile):
                 strURL = strSite+strHref
+                print("Downloading to: ", strLocalFile)
                 strText = getPDF(strURL, strLocalFile)
                 sleep(1+random())
             else:
