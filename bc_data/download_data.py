@@ -51,11 +51,17 @@ for pA in lstA:
                     strText += pPage.extract_text() + "\n"
             
             lstText = strText.split("\n")
-            for strLine in lstText:
-                if strLine.strip().startswith("Total"):
-                    lstData = strLine.split()[3:]
-                    mapResults[pDate] = " ".join(lstData)+" "+str(sqrt(int(lstData[-1])))
-                    break
+            for strTag in ["Total", "British Columbia"]:
+                for strLine in lstText:
+                    if strLine.strip().startswith(strTag):
+                        lstData = strLine.split()[3:]
+                        if len(lstData) == 0: break
+                        if "%" in lstData[0]:
+                            lstData = strLine.split()[4:]
+                            lstData.pop()
+#                        print(lstData)
+                        mapResults[pDate] = " ".join(lstData)+" "+str(sqrt(int(lstData[-1])))
+                        break
 
 with open("bc_measles.dat") as inFile:
     for strLine in inFile:
