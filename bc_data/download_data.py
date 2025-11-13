@@ -17,10 +17,12 @@ strURL = strSite+"/health-info/diseases-conditions/measles"
 pGetter = GetHTML()
 
 strMainPage = "main_page.html"
-pStat = os.stat(strMainPage)
-#print(pStat.st_mtime)
-pFileDate = datetime.fromtimestamp(pStat.st_mtime).date()
-#print(pFileDate)
+pFileDate = None
+if os.path.exists(strMainPage):
+    pStat = os.stat(strMainPage)
+    #print(pStat.st_mtime)
+    pFileDate = datetime.fromtimestamp(pStat.st_mtime).date()
+    #print(pFileDate)
 
 if pFileDate != date.today():
     print("Getting main file...")
@@ -60,8 +62,16 @@ for pA in lstA:
                             lstData = strLine.split()[4:]
                             lstData.pop()
 #                        print(lstData)
-                        mapResults[pDate] = " ".join(lstData)+" "+str(sqrt(int(lstData[-1])))
-                        break
+                        nIndex = -1
+                        while True:
+                            try:
+                                lstData = [strX for strX in lstData if "%" not in strX]
+                                mapResults[pDate] = " ".join(lstData)+" "+str(sqrt(int(lstData[nIndex])))
+                                print(mapResults[pDate])
+                            except ValueError as e:
+                                nIndex -= 1
+                                continue
+                            break
 
 with open("bc_measles.dat") as inFile:
     for strLine in inFile:
@@ -88,4 +98,5 @@ with open("play_bc.gno", "w") as outFile:
     outFile.write("f(x) = A*exp((x-datetime(2025, 7, 7)).days/B)\n")
     outFile.write("A = 103.13\n")
     outFile.write("B = 55.95\n")
-    outFile.write('plot "bc_measles.dat" using 1:4:5 with errorbars title "BC Measles Cases", f(x) title "Exponential Fit, Doubling Time = 38.8 days"\n')
+#    outFile.write('plot "bc_measles.dat" using 1:4:5 with errorbars title "BC Measles Cases", f(x) title "Exponential Fit, Doubling Time = 38.8 days"\n')
+    outFile.write('plot "bc_measles.dat" using 1:4:5 with errorbars title "BC Measles Cases"\n')
