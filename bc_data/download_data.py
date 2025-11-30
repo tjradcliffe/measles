@@ -34,6 +34,7 @@ else:
 
 lstA = pSoup.find_all("a")
 mapResults = {}
+print("#Date Confirmed Suspected Total TotalError")
 for pA in lstA:
     if "href" in pA.attrs:
         strHref = pA.attrs['href']
@@ -67,7 +68,7 @@ for pA in lstA:
                             try:
                                 lstData = [strX for strX in lstData if "%" not in strX]
                                 mapResults[pDate] = " ".join(lstData)+" "+str(sqrt(int(lstData[nIndex])))
-                                print(mapResults[pDate])
+                                print(pDate, mapResults[pDate])
                             except ValueError as e:
                                 nIndex -= 1
                                 continue
