@@ -68,7 +68,7 @@ for pA in lstA:
                             try:
                                 lstData = [strX for strX in lstData if "%" not in strX]
                                 mapResults[pDate] = " ".join(lstData)+" "+str(sqrt(int(lstData[nIndex])))
-                                print(pDate, mapResults[pDate])
+#                                print(pDate, mapResults[pDate])
                             except ValueError as e:
                                 nIndex -= 1
                                 continue
@@ -85,6 +85,7 @@ lstKeys.sort()
 with open("bc_measles.dat", "a") as outFile:
 #    outFile.write("#Date Confirmed Suspected Total TotalError\n")
     for pDate in lstKeys:
+        print(str(pDate)+" "+mapResults[pDate])
         if pDate > pLast:
             outFile.write(str(pDate)+" "+mapResults[pDate]+"\n")
 
