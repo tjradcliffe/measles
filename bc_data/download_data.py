@@ -82,12 +82,15 @@ with open("bc_measles.dat") as inFile:
 
 lstKeys = list(mapResults.keys())
 lstKeys.sort()
+nLast = 99
 with open("bc_measles.dat", "a") as outFile:
-#    outFile.write("#Date Confirmed Suspected Total TotalError\n")
+#    outFile.write("#Date Confirmed Suspected Total TotalError Diff\n")
     for pDate in lstKeys:
-        print(str(pDate)+" "+mapResults[pDate])
+        nCases = int(mapResults[pDate].split()[2])
+        print(str(pDate)+" "+mapResults[pDate], nCases-nLast)
         if pDate > pLast:
-            outFile.write(str(pDate)+" "+mapResults[pDate]+"\n")
+            outFile.write(str(pDate)+" "+mapResults[pDate]+" "+str(nCases-nLast)+"\n")
+        nLast = nCases
 
 pEndDate = date.today()+timedelta(days=7)
 with open("play_bc.gno", "w") as outFile:
